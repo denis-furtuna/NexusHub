@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/NexusHub/static/css/main.c2763ab6.css",
+    "main.js": "/NexusHub/static/js/main.9d6b5a38.js",
+    "static/js/453.ef3387e0.chunk.js": "/NexusHub/static/js/453.ef3387e0.chunk.js",
+    "index.html": "/NexusHub/index.html",
+    "main.c2763ab6.css.map": "/NexusHub/static/css/main.c2763ab6.css.map",
+    "main.9d6b5a38.js.map": "/NexusHub/static/js/main.9d6b5a38.js.map",
+    "453.ef3387e0.chunk.js.map": "/NexusHub/static/js/453.ef3387e0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c2763ab6.css",
+    "static/js/main.9d6b5a38.js"
+  ]
+}
