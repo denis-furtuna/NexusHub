@@ -17,4 +17,4 @@ The central command center for my algorithmic ecosystem. This is a high-performa
 - **SpeedMath:** 1v1 Competitive logic and mental arithmetic trainer.
 
 ---
-*Built with precision in Timișoara, RO. © 2026 FurtunaLabs.*
+*Built with precision © 2026 FurtunaLabs.*
