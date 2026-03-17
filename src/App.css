@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700;900&display=swap');
 
 * {
     box-sizing: border-box;
@@ -78,16 +78,28 @@ body, html {
 
 .grid-deployment {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap; /* ORDIN DIRECT: Fără trecere pe rândul doi! */
+    justify-content: flex-start; /* Aliniem trupele de la stânga la dreapta */
     gap: 3rem;
     width: 100%;
-    max-width: 1300px;
+    max-width: 100vw; /* Lăsăm să ocupe tot ecranul orizontal */
     pointer-events: auto;
     margin-bottom: 5rem;
+    padding: 1rem 5vw 3rem 5vw; /* Spațiu lateral ca să nu se lovească de margini */
+    overflow-x: auto; /* Activăm glisarea orizontală */
+    overflow-y: hidden; /* Tăiem scroll-ul vertical inutil */
+    scroll-behavior: smooth; /* Glisare fluidă */
+    /* Tactica de camuflaj: Ascundem bara de scroll urâtă */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.grid-deployment::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
 }
 
 .glass-card {
+    flex: 0 0 auto; /* TACTICĂ VITALĂ: Nu te micșora, păstrează-ți lățimea de 360px! */
     position: relative;
     width: 360px;
     background: rgba(15, 10, 25, 0.5);
