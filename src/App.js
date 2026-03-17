@@ -1,4 +1,4 @@
-﻿import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { MeshDistortMaterial, Sphere, Stars, Sparkles, Float } from '@react-three/drei';
 import gsap from 'gsap';
@@ -22,6 +22,15 @@ const apps = [
         color: "#00ffcc",
         url: "https://denis-furtuna.github.io/Focus-Reader/",
         tech: ["C#", "XAML", "Regex"]
+    },
+    {
+        id: "roadtech",
+        title: "ROAD TECH",
+        subtitle: "// INFINITE_KNOWLEDGE_ENGINE",
+        description: "An infinitely scalable 16-bit educational RPG. Extracts verified data via Wikipedia API and leverages an AI engine to forge custom quests and boss battles on ANY subject.",
+        color: "#FF8800",
+        url: "https://denis-furtuna.github.io/roadtech/",
+        tech: ["Godot 4", "FastAPI", "Groq AI", "Wiki API"]
     },
     {
         id: "speedmath",
