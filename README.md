@@ -12,6 +12,7 @@ The central command center for my algorithmic ecosystem. This is a high-performa
 - **Deployment:** CI/CD via gh-pages
 
 ## 🚀 PROJECTS FEATURED
+- **ROAD TECH:** Infinitely scalable 16-bit educational RPG powered by Godot 4 & FastAPI. Forges real-time quests and boss battles using Groq AI (Llama 3) and Wikipedia API.
 - **ScamSlap:** Async Anti-Fraud Engine bypassing Meta's API timeouts.
 - **Focus Reader:** High-speed RSVP reading engine (1000+ WPM).
 - **SpeedMath:** 1v1 Competitive logic and mental arithmetic trainer.
