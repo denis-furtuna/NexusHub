@@ -29,7 +29,7 @@ const apps = [
         subtitle: "// INFINITE_KNOWLEDGE",
         description: "An infinitely scalable 16-bit educational RPG. Extracts data via Wikipedia API & Groq AI.",
         color: "#FF8800",
-        url: "https://denis-furtuna.github.io/roadtech/",
+        url: "https://denis-furtuna.github.io/RoadTech/",
         tech: ["Godot 4", "FastAPI", "Groq AI"]
     },
     {
