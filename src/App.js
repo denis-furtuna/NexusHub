@@ -26,11 +26,11 @@ const apps = [
     {
         id: "roadtech",
         title: "ROAD TECH",
-        subtitle: "// INFINITE_KNOWLEDGE_ENGINE",
-        description: "An infinitely scalable 16-bit educational RPG. Extracts verified data via Wikipedia API and leverages an AI engine to forge custom quests and boss battles on ANY subject.",
+        subtitle: "// INFINITE_KNOWLEDGE",
+        description: "An infinitely scalable 16-bit educational RPG. Extracts data via Wikipedia API & Groq AI.",
         color: "#FF8800",
         url: "https://denis-furtuna.github.io/roadtech/",
-        tech: ["Godot 4", "FastAPI", "Groq AI", "Wiki API"]
+        tech: ["Godot 4", "FastAPI", "Groq AI"]
     },
     {
         id: "speedmath",
@@ -43,17 +43,12 @@ const apps = [
     }
 ];
 
-// Reacție spectaculoasă a camerei, conectată ACUM la senzorul global de mouse
+// Reacție a camerei 3D la coordonatele globale
 function CameraRig({ mouseGlobalRef }) {
     useFrame((state) => {
-        // Citim coordonatele globale în loc de state.mouse (care e blocat de interfață)
         const mx = mouseGlobalRef.current[0];
         const my = mouseGlobalRef.current[1];
-
-        state.camera.position.lerp(
-            { x: (mx * 3), y: (my * 3), z: 8 },
-            0.05
-        );
+        state.camera.position.lerp({ x: (mx * 3), y: (my * 3), z: 8 }, 0.05);
         state.camera.lookAt(0, 0, 0);
     });
     return null;
@@ -90,11 +85,11 @@ const App = () => {
     const uiRef = useRef(null);
     const gridRef = useRef(null);
     const cardsRef = useRef([]);
-    const mouseGlobalRef = useRef([0, 0]); // Senzorul global pentru fundalul 3D
+    const mouseGlobalRef = useRef([0, 0]);
 
     useEffect(() => {
+        // Animația brutală de lansare
         const ctx = gsap.context(() => {
-            // 1. Animație agresivă de intrare (Păstrată din original)
             gsap.fromTo(".glitch-title",
                 { y: -100, opacity: 0, scale: 0.8 },
                 { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "elastic.out(1, 0.5)" }
@@ -109,69 +104,74 @@ const App = () => {
                 { y: 150, opacity: 0, rotationX: 15 },
                 { y: 0, opacity: 1, rotationX: 0, duration: 1.2, stagger: 0.15, ease: "back.out(1.2)", delay: 0.4 }
             );
-
-            // 2. RADAR DE PROXIMITATE PENTRU DOCK EFFECT
-            const handleProximity = (e) => {
-                if (!gridRef.current || cardsRef.current.length === 0) return;
-
-                const gridRect = gridRef.current.getBoundingClientRect();
-                const mouseGridX = e.clientX;
-                const mouseGridY = e.clientY;
-
-                cardsRef.current.forEach((card) => {
-                    if (!card) return;
-                    const cardRect = card.getBoundingClientRect();
-                    const cardCenterX = cardRect.left + cardRect.width / 2;
-                    const cardCenterY = cardRect.top + cardRect.height / 2;
-
-                    const distX = mouseGridX - cardCenterX;
-                    const distY = mouseGridY - cardCenterY;
-                    const distance = Math.sqrt(distX * distX + distY * distY);
-
-                    // Raza radarului și limitele de mărire
-                    const proximityRadius = 400;
-                    const maxScale = 1.15; // Nu le mărim prea mult să nu iasă din ecran!
-                    const baseScale = 1.0;
-
-                    let scale = gsap.utils.mapRange(0, proximityRadius, maxScale, baseScale, distance);
-                    scale = Math.max(baseScale, scale);
-
-                    gsap.to(card, {
-                        scale: scale,
-                        duration: 0.2,
-                        ease: 'power2.out',
-                        overwrite: 'auto'
-                    });
-                });
-            };
-
-            window.addEventListener('mousemove', handleProximity);
-            return () => window.removeEventListener('mousemove', handleProximity);
-
         }, uiRef);
 
-        return () => ctx.revert();
+        // Radarul global pentru 3D și Efectul de Mărire (Mac Dock)
+        const handleGlobalMouseMove = (e) => {
+            // 1. Hrănim gaura neagră 3D cu coordonate
+            const x = (e.clientX / window.innerWidth) * 2 - 1;
+            const y = -(e.clientY / window.innerHeight) * 2 + 1;
+            mouseGlobalRef.current = [x, y];
+
+            // 2. Executăm matematica de mărire pentru carduri
+            if (!cardsRef.current.length) return;
+
+            cardsRef.current.forEach((card) => {
+                if (!card) return;
+                const rect = card.getBoundingClientRect();
+                const cardCenterX = rect.left + rect.width / 2;
+                const cardCenterY = rect.top + rect.height / 2;
+
+                const distX = e.clientX - cardCenterX;
+                const distY = e.clientY - cardCenterY;
+                const distance = Math.sqrt(distX * distX + distY * distY);
+
+                const proximity = 300;
+                const baseScale = 1.0;
+                const maxScale = 1.2; // Zoom controlat, puternic, dar nu sparge ecranul
+
+                let scale = baseScale;
+                if (distance < proximity) {
+                    const intensity = 1 - (distance / proximity);
+                    scale = baseScale + (maxScale - baseScale) * intensity;
+                }
+
+                gsap.to(card, {
+                    scale: scale,
+                    duration: 0.15,
+                    ease: "power2.out",
+                    overwrite: "auto"
+                });
+            });
+        };
+
+        const handleMouseLeave = () => {
+            cardsRef.current.forEach((card) => {
+                if (card) {
+                    gsap.to(card, { scale: 1.0, duration: 0.4, ease: "back.out(1.5)", overwrite: "auto" });
+                }
+            });
+        };
+
+        window.addEventListener('mousemove', handleGlobalMouseMove);
+        document.body.addEventListener('mouseleave', handleMouseLeave);
+
+        return () => {
+            ctx.revert();
+            window.removeEventListener('mousemove', handleGlobalMouseMove);
+            document.body.removeEventListener('mouseleave', handleMouseLeave);
+        };
     }, []);
 
     return (
-        <div className="master-container"
-            // Capturăm coordonatele mouse-ului GLOBAL, ca să nu înghețe scena 3D!
-            onMouseMove={(e) => {
-                const x = (e.clientX / window.innerWidth) * 2 - 1;
-                const y = -(e.clientY / window.innerHeight) * 2 + 1;
-                mouseGlobalRef.current = [x, y];
-            }}
-        >
+        <div className="master-container">
             <div className="canvas-container">
                 <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
                     <color attach="background" args={['#020005']} />
                     <ambientLight intensity={0.4} />
                     <pointLight position={[10, 10, 10]} intensity={2} color="#9933ff" />
-
-                    {/* Transmitem senzorul global către cameră */}
                     <CameraRig mouseGlobalRef={mouseGlobalRef} />
                     <CyberCore />
-
                     <Sparkles count={200} scale={15} size={10} speed={0.4} opacity={0.5} color="#00ffcc" />
                     <Stars radius={100} depth={50} count={7000} factor={5} saturation={1} fade speed={2} />
                 </Canvas>
@@ -192,7 +192,7 @@ const App = () => {
                             rel="noopener noreferrer"
                             className="glass-card"
                             style={{ "--theme": app.color }}
-                            ref={el => cardsRef.current[index] = el} // Conectăm fiecare card la radar!
+                            ref={el => cardsRef.current[index] = el}
                         >
                             <div className="card-glow"></div>
                             <div className="card-content">
@@ -205,7 +205,7 @@ const App = () => {
                                     {app.tech.map(t => <span key={t} className="tech-tag">{t}</span>)}
                                 </div>
                                 <div className="action-bar">
-                                    <span className="launch-text">INITIATE_PROTOCOL //</span>
+                                    <span className="launch-text">INITIATE //</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                                 </div>
                             </div>
