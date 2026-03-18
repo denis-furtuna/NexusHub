@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/NexusHub/static/css/main.7dd2add0.css",
-    "main.js": "/NexusHub/static/js/main.f251950b.js",
+    "main.css": "/NexusHub/static/css/main.b2dd68a4.css",
+    "main.js": "/NexusHub/static/js/main.2ec03e02.js",
     "static/js/453.ef3387e0.chunk.js": "/NexusHub/static/js/453.ef3387e0.chunk.js",
     "index.html": "/NexusHub/index.html",
-    "main.7dd2add0.css.map": "/NexusHub/static/css/main.7dd2add0.css.map",
-    "main.f251950b.js.map": "/NexusHub/static/js/main.f251950b.js.map",
+    "main.b2dd68a4.css.map": "/NexusHub/static/css/main.b2dd68a4.css.map",
+    "main.2ec03e02.js.map": "/NexusHub/static/js/main.2ec03e02.js.map",
     "453.ef3387e0.chunk.js.map": "/NexusHub/static/js/453.ef3387e0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7dd2add0.css",
-    "static/js/main.f251950b.js"
+    "static/css/main.b2dd68a4.css",
+    "static/js/main.2ec03e02.js"
   ]
 }
